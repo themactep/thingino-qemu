@@ -14,7 +14,7 @@
 #include "target/mips/cpu.h"
 #include "hw/qdev-clock.h"
 
-#define T31_UART0_PHYS 0x10030000u /* vendor UART0_BASE 0xB0030000 (KSEG1) */
+#define T31_UART1_PHYS 0x10031000u /* vendor UART0_BASE 0xB0030000 (KSEG1) */
 #define T31_RAM_BASE   0x00000000u
 #define T31_RESET_ADDR 0x1FC00000u /* maps to KSEG1 0xBFC00000 */
 #define T31_BIOS_SIZE  (4 * MiB)
@@ -28,7 +28,7 @@ static void t31_init(MachineState *machine)
     MIPSCPU *cpu __attribute__((unused));
 
     /* CPU clock ~400 MHz (arbitrary; adjust later if desired) */
-    cpuclk = qdev_init_clock_out(DEVICE(machine), "cpu-refclk");
+    cpuclk = clock_new(OBJECT(machine), "cpu-refclk");
     clock_set_hz(cpuclk, 400000000);
 
     /* Create a MIPS32r2 CPU (default from mc->default_cpu_type) */
@@ -39,10 +39,10 @@ static void t31_init(MachineState *machine)
     /* Map main RAM at 0x0 */
     memory_region_add_subregion(sysmem, T31_RAM_BASE, machine->ram);
 
-    /* UART0 at Ingenic T31 address; use regshift=2 (32-bit spaced regs). */
+    /* UART1 at Ingenic T31 address; use regshift=2 (32-bit spaced regs). */
     qemu_irq uirq = qemu_allocate_irq(dummy_irq_handler, NULL, 0);
-    serial_mm_init(sysmem, T31_UART0_PHYS, /*regshift*/2, uirq,
-                   115200, serial_hd(0), DEVICE_NATIVE_ENDIAN);
+    serial_mm_init(sysmem, T31_UART1_PHYS, /*regshift*/2, uirq,
+                   24000000, serial_hd(0), DEVICE_NATIVE_ENDIAN);
 
     /* Optional: register a pflash (if provided via -drive if=pflash) at reset addr */
     {
@@ -64,11 +64,11 @@ static void t31_init(MachineState *machine)
 static void t31_machine_class_init(ObjectClass *oc, const void *data)
 {
     MachineClass *mc = MACHINE_CLASS(oc);
-    mc->desc = "Thingino Ingenic T31 (UART@0x10030000, pflash@0x1FC00000)";
+    mc->desc = "Thingino Ingenic T31 (UART@0x10031000, pflash@0x1FC00000)";
     mc->init = t31_init;
     mc->default_cpu_type = MIPS_CPU_TYPE_NAME("24Kf");
     mc->default_ram_id = "t31.ram";
-    mc->default_ram_size = 256 * MiB;
+    mc->default_ram_size = 128 * MiB;
 }
 
 static const TypeInfo t31_machine_types[] = {
