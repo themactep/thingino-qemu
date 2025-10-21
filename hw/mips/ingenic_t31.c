@@ -19,8 +19,6 @@
 #define T31_RESET_ADDR 0x1FC00000u /* maps to KSEG1 0xBFC00000 */
 #define T31_BIOS_SIZE  (16 * MiB)
 
-static void dummy_irq_handler(void *opaque, int n, int level) { /* no-op */ }
-
 static void t31_init(MachineState *machine)
 {
     MemoryRegion *sysmem = get_system_memory();
@@ -34,13 +32,16 @@ static void t31_init(MachineState *machine)
     /* Create a MIPS32r2 CPU (default from mc->default_cpu_type) */
     cpu = mips_cpu_create_with_clock(machine->cpu_type, cpuclk, false);
 
-    (void)cpu;
+    cpu_mips_irq_init_cpu(cpu);
+    cpu_mips_clock_init(cpu);
 
     /* Map main RAM at 0x0 */
     memory_region_add_subregion(sysmem, T31_RAM_BASE, machine->ram);
 
     /* UART1 at Ingenic T31 address; use regshift=2 (32-bit spaced regs). */
-    qemu_irq uirq = qemu_allocate_irq(dummy_irq_handler, NULL, 0);
+    MIPSCPU *pcpu = MIPS_CPU(first_cpu);
+    CPUMIPSState *env = &pcpu->env;
+    qemu_irq uirq = env->irq[4];
     serial_mm_init(sysmem, T31_UART1_PHYS, /*regshift*/2, uirq,
                    24000000, serial_hd(0), DEVICE_NATIVE_ENDIAN);
 
