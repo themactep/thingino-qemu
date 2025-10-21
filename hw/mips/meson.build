@@ -13,3 +13,7 @@ mips_ss.add(when: 'CONFIG_MIPS_BOSTON', if_true: files('boston.c'))
 endif
 
 hw_arch += {'mips': mips_ss}
+
+# Thingino T31 machine
+mips_ss.add(files('ingenic_t31.c'))
+
