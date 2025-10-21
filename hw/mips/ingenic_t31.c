@@ -17,7 +17,7 @@
 #define T31_UART1_PHYS 0x10031000u /* vendor UART0_BASE 0xB0030000 (KSEG1) */
 #define T31_RAM_BASE   0x00000000u
 #define T31_RESET_ADDR 0x1FC00000u /* maps to KSEG1 0xBFC00000 */
-#define T31_BIOS_SIZE  (4 * MiB)
+#define T31_BIOS_SIZE  (16 * MiB)
 
 static void dummy_irq_handler(void *opaque, int n, int level) { /* no-op */ }
 
