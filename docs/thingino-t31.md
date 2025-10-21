@@ -23,20 +23,6 @@ ERROR: Unknown options: "target_list"
 ninja: Entering directory `build-t31'
 [1/19] Generating subprojects/dtc/version_gen.h with a custom command
 [2/19] Generating qemu-version.h with a custom command (wrapped by meson to capture output)
-[3/16] Compiling C object qemu-vmsr-helper.p/tools_i386_qemu-vmsr-helper.c.o
-[4/16] Compiling C object qemu-pr-helper.p/scsi_qemu-pr-helper.c.o
-[5/16] Compiling C object storage-daemon/qemu-storage-daemon.p/qemu-storage-daemon.c.o
-[6/16] Compiling C object qemu-io.p/qemu-io.c.o
-[7/16] Linking target qemu-vmsr-helper
-[8/16] Linking target qemu-pr-helper
-[9/16] Compiling C object qemu-nbd.p/qemu-nbd.c.o
-[10/16] Compiling C object qga/qemu-ga.p/main.c.o
-[11/16] Linking target storage-daemon/qemu-storage-daemon
-[12/16] Linking target qga/qemu-ga
-[13/16] Linking target qemu-io
-[14/16] Linking target qemu-nbd
-[15/16] Compiling C object qemu-img.p/qemu-img.c.o
-[16/16] Linking target qemu-img
 
 Check the machine is registered:
 thingino-t31         Thingino Ingenic T31 (UART@0x10031000, pflash@0x1FC00000)
